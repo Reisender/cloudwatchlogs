@@ -1,4 +1,4 @@
-module cloudwatchlogs
+module github.com/Reisender/cloudwatchlogs
 
 go 1.18
 
