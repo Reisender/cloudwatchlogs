@@ -20,3 +20,12 @@ Assuming your `go/bin` dir is in your path, you can just run it like so
 ```bash
 getlogstream --help
 ```
+
+## troubleshooting
+
+If you are getting an error trying to install the latest version, you can try skipping the go proxy like this.
+
+```bash
+export GOPRIVATE=github.com/Reisender/cloudwatchlogs
+go install github.com/Reisender/cloudwatchlogs/cmd/getlogstream@latest
+```
