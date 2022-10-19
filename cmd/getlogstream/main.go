@@ -73,7 +73,6 @@ func run(c *cli.Context) error {
 
 		nextToken = output.NextForwardToken
 		eventCount = len(output.Events)
-		fmt.Println(nextToken, eventCount)
 
 		for _, evt := range output.Events {
 			fmt.Println(*evt.Message)
