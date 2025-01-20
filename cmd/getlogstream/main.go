@@ -7,6 +7,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials"
 	cwl "github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 
 	"github.com/urfave/cli/v2"
@@ -34,6 +35,21 @@ func main() {
 				Usage:   "the aws profile to use",
 				EnvVars: []string{"AWS_PROFILE"},
 			},
+			&cli.StringFlag{
+				Name:    "aws-access-key-id",
+				Usage:   "the aws access key to use",
+				EnvVars: []string{"AWS_ACCESS_KEY_ID"},
+			},
+			&cli.StringFlag{
+				Name:    "aws-secret-access-key",
+				Usage:   "the aws secret access key to use",
+				EnvVars: []string{"AWS_SECRET_ACCESS_KEY"},
+			},
+			&cli.StringFlag{
+				Name:    "aws-session-token",
+				Usage:   "the aws session to use",
+				EnvVars: []string{"AWS_SESSION_TOKEN"},
+			},
 		},
 		Action: run,
 	}
@@ -50,6 +66,10 @@ func run(c *cli.Context) error {
 	options := [](func(*config.LoadOptions) error){}
 	if len(c.String("profile")) > 0 {
 		options = append(options, config.WithSharedConfigProfile(c.String("profile")))
+	}
+	if len(c.String("aws-access-key-id")) > 0 {
+		fmt.Println("AWS_ACCESS_KEY_ID", c.String("aws-access-key-id"))
+		options = append(options, config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(c.String("aws-access-key-id"), c.String("aws-secret-access-key"), c.String("aws-session-token"))))
 	}
 	cfg, err := config.LoadDefaultConfig(ctx, options...)
 	if err != nil {
