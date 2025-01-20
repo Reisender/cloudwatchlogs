@@ -29,6 +29,11 @@ func main() {
 				Name:     "log-stream",
 				Usage:    "the log stream to get events from",
 			},
+			&cli.StringFlag{
+				Name:    "profile",
+				Usage:   "the aws profile to use",
+				EnvVars: []string{"AWS_PROFILE"},
+			},
 		},
 		Action: run,
 	}
@@ -41,8 +46,12 @@ func main() {
 func run(c *cli.Context) error {
 	ctx := c.Context
 
-	// Load the Shared AWS Configuration (~/.aws/config)
-	cfg, err := config.LoadDefaultConfig(ctx)
+	// Load the Shared AWS Configuration (~/.aws/config
+	options := [](func(*config.LoadOptions) error){}
+	if len(c.String("profile")) > 0 {
+		options = append(options, config.WithSharedConfigProfile(c.String("profile")))
+	}
+	cfg, err := config.LoadDefaultConfig(ctx, options...)
 	if err != nil {
 		log.Fatal(err)
 	}
