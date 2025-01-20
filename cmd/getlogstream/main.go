@@ -68,7 +68,6 @@ func run(c *cli.Context) error {
 		options = append(options, config.WithSharedConfigProfile(c.String("profile")))
 	}
 	if len(c.String("aws-access-key-id")) > 0 {
-		fmt.Println("AWS_ACCESS_KEY_ID", c.String("aws-access-key-id"))
 		options = append(options, config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(c.String("aws-access-key-id"), c.String("aws-secret-access-key"), c.String("aws-session-token"))))
 	}
 	cfg, err := config.LoadDefaultConfig(ctx, options...)
